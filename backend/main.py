@@ -1,4 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from . import schemas, crud
+from sqlalchemy.orm import Session
+from .database import get_db
+
 
 app = FastAPI()
 
@@ -12,10 +16,8 @@ async def say_hello(name: str):
     return {"message": f"Hello {name}"}
 
 @app.post("/users")
-async def create_user():
-    
-    
-    return user
+def create_user(user: schemas.createUser, db: Session = Depends(get_db)):
+    return crud.create_user(db, user)
 
 
 if __name__ == "__main__":
