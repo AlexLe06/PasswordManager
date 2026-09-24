@@ -1,5 +1,6 @@
-from database import Base
+from backend.database import Base
 from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 import datetime
 
 
@@ -12,6 +13,8 @@ class User(Base):
     password_hash = Column(String, unique=False, nullable=False)
     date_created = Column(datetime, default=datetime.datetime.utcnow)
 
+    vault_entries = relationship("VaultEntry", back_populates="user")
+
 class VaultEntry(Base):
     __tablename__ = "UserEntries"
 
@@ -20,3 +23,5 @@ class VaultEntry(Base):
     username = Column(String, nullable=False)
     password_encrypt = Column(String, nullable=False)
     user_id = Column(Integer, ForeignKey=("user.id"), nullable=False)
+
+    user = relationship("User", back_populates="vault_entries")
