@@ -9,3 +9,5 @@ def create_user(db : Session, user: schemas.createUser):
     db.refresh(db_user)
     return db_user
 
+def get_user(db: Session):
+    pass
